@@ -25,19 +25,8 @@ jobs:
           role-to-assume: ${{ secrets.git_role }}
           aws-region: us-east-1
 
-      - name: Generate current CloudFormation resource list
-        run: |
-          aws cloudformation list-types \
-            --type RESOURCE \
-            --visibility PUBLIC \
-            --provisioning-type FULLY_MUTABLE \
-            --filters TypeNamePrefix="AWS::" | \
-          jq -r '.TypeSummaries[].TypeName' | sort > supported-resources.txt
-          echo "Found $(wc -l < supported-resources.txt) CloudFormation resources"
-
       - name: Generate provider supported resource list
         run: |
-          touch current-resources.txt
           # Create script to extract resource names from schema files
           cat > extract-resources.sh << 'EOF'
           #!/bin/bash
@@ -164,3 +153,4 @@ jobs:
             diff-output.txt
             missing-resources.txt
           retention-days: 30
+
