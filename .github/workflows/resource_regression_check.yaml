@@ -37,6 +37,7 @@ jobs:
 
       - name: Generate provider supported resource list
         run: |
+          touch current-resources.txt
           # Create script to extract resource names from schema files
           cat > extract-resources.sh << 'EOF'
           #!/bin/bash
